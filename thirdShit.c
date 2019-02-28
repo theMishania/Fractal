@@ -6,16 +6,17 @@
 /*   By: cocummin <cocummin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 15:05:14 by cocummin          #+#    #+#             */
-/*   Updated: 2019/02/28 17:33:04 by cocummin         ###   ########.fr       */
+/*   Updated: 2019/02/28 19:42:14 by cocummin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mlx.h"
-#include "HSVtoRGB.c"
-#include <pthread.h>
+// #include "mlx.h"
+// #include "HSVtoRGB.c"
+// #include <pthread.h>
+// #include <OpenCL/opencl.h>
 
-# define MAX_ITERATIONS 400
-# define Width 600
+// # define MAX_ITERATIONS 400
+// # define Width 600
 
 double zoom = 1;
 double delta_y = 0;
@@ -27,7 +28,7 @@ int right_mouse_pressed = 0;
 int xx;
 int yy;
 
-unsigned int color;
+unsigned int color = 1312323123213213;
 
 typedef struct image_andAnd_y
 {
@@ -58,7 +59,7 @@ int mouse_press(int button, int x, int y, void *param)
     }
     xx = x;
     yy = y;
-    main();
+    mishaniabrot(param);
 }
 
 int mouse_release(int button, int x, int y, void *param)
@@ -67,7 +68,7 @@ int mouse_release(int button, int x, int y, void *param)
         middle_mouse_pressed = 0;
     else if (button == 2)
         right_mouse_pressed = 0;
-    main();
+    mishaniabrot(param);
 }
 
 int mouse_move(int x, int y, void *param)
@@ -102,7 +103,7 @@ int mouse_move(int x, int y, void *param)
         xx = x;
     }
 
-    main();
+    mishaniabrot(param);
 }
 
 void	put_point_to_image(char *image_data, int x, int y, int color)
@@ -147,7 +148,7 @@ int plus_clicked(int key, void *parse)
         color += 0x000002;
     else if (key == 0x35)
         exit(-2);
-    main();
+    mishaniabrot(parse);
     return (0);
 }
 
@@ -203,9 +204,10 @@ void    *row_calculate(void *argv)
 
 
 
-int main()
+int mishaniabrot(void   *mlx_ptr)
 {
-    static void    *mlx_ptr;
+    //printf("MishaniaBrot\n");
+   // static void    *mlx_ptr;
     static void    *win_ptr;
     static void    *image;
     static char     *image_data;
@@ -222,8 +224,8 @@ int main()
 	    len = Width;
 	    endian = 0;
 
-        mlx_ptr = mlx_init();
-        win_ptr = mlx_new_window(mlx_ptr, Width, Width, "Julia");
+        //mlx_ptr = mlx_init();
+        win_ptr = mlx_new_window(mlx_ptr, Width, Width, "Mishaniabrot");
         image = mlx_new_image(mlx_ptr, Width, Width);
         image_data = mlx_get_data_addr(image, &bytes, &len, &endian);
     }
@@ -305,10 +307,11 @@ int main()
 
     mlx_put_image_to_window(mlx_ptr, win_ptr, image, 0, 0);
     //
-    mlx_hook(win_ptr, 2, 1L << 0, plus_clicked, (void*)0);
-    mlx_hook(win_ptr, 4, 1L << 0, mouse_press, (void*)0);
-    mlx_hook(win_ptr, 5, 1L << 0, mouse_release, (void*)0);
-    mlx_hook(win_ptr, 6, 1L << 0, mouse_move, (void*)0);
+    mlx_hook(win_ptr, 2, 1L << 0, plus_clicked, mlx_ptr);
+    mlx_hook(win_ptr, 4, 1L << 0, mouse_press, mlx_ptr);
+    mlx_hook(win_ptr, 5, 1L << 0, mouse_release, mlx_ptr);
+    mlx_hook(win_ptr, 6, 1L << 0, mouse_move, mlx_ptr);
+    mandelbrot(mlx_ptr);
     //mlx_key_hook(win_ptr, plus_clicked, (void *)0);
     mlx_loop(mlx_ptr);
     return(0);
