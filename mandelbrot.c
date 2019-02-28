@@ -6,7 +6,7 @@
 /*   By: chorange <chorange@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 16:23:10 by cocummin          #+#    #+#             */
-/*   Updated: 2019/02/27 23:23:27 by chorange         ###   ########.fr       */
+/*   Updated: 2019/02/28 16:44:57 by chorange         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,27 +23,35 @@ double delta_x = 0;
 int xx;
 int yy;
 
-int left_mouse_pressed = 0;
+int middle_mouse_pressed = 0;
 
 int mouse_press(int button, int x, int y, void *param)
 {
+    int dx = Width/2 - x;
+    int dy = Width/2 - y;
+
+    if (button == 3)
+        middle_mouse_pressed = 1;
+    else if (button == 4)
+    {
+        zoom += zoom * 0.4;
+        delta_x -= dx * 0.002 / zoom;
+        delta_y -= dy * 0.00135 / zoom;
+    }
+    else if (button == 5)
+    {
+        zoom -= zoom * 0.4;
+        delta_x += dx * 0.002 / zoom;
+        delta_y += dy * 0.00135 / zoom;
+    }
     xx = x;
     yy = y;
-    if (button == 1)
-        left_mouse_pressed = 1;
-    //else if (key == 2)
-     //   right_mouse_pressed = 1;
-    else if (button == 4)
-        zoom += zoom * 0.4;
-    else if (button == 5)
-        zoom -= zoom * 0.4;
-    main();
 }
 
 int mouse_release(int button, int x, int y, void *param)
 {
     if (button == 1)
-        left_mouse_pressed = 0;
+        middle_mouse_pressed = 0;
     //else if (key == 2)
     //    right_mouse_pressed = 0;
     main();
@@ -54,7 +62,7 @@ int mouse_move(int x, int y, void *param)
     int dx = xx - x;
     int dy = yy - y;
 
-    if (left_mouse_pressed)
+    if (middle_mouse_pressed)
     {
         if (dx > 0)
             delta_x += 0.005*dx / zoom;
@@ -67,7 +75,6 @@ int mouse_move(int x, int y, void *param)
         yy = y;
         xx = x;
     }
-
     main();
 }
 

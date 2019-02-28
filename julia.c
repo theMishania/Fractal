@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   julia.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cocummin <cocummin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chorange <chorange@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 17:18:41 by cocummin          #+#    #+#             */
-/*   Updated: 2019/02/28 14:46:15 by cocummin         ###   ########.fr       */
+/*   Updated: 2019/02/28 16:40:17 by chorange         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 #include <pthread.h>
 
 # define MAX_ITERATIONS 400
-# define Width 1000
+# define Width 600
 
 double zoom = 1;
 double delta_y = 0;
 double delta_x = 0;
 double cRe = -0.7f;
 double cIm = 0.29015f;
-int left_mouse_pressed = 0;
+int middle_mouse_pressed = 0;
 int right_mouse_pressed = 0;
 int xx;
 int yy;
@@ -31,27 +31,38 @@ typedef struct image_andAnd_y
 {
     char *image_data;
     int y;
-}          t_image_and_y;     
+}          t_image_and_y;
 
 int mouse_press(int button, int x, int y, void *param)
 {
-    xx = x;
-    yy = y;
-    if (button == 1)
-        left_mouse_pressed = 1;
+    int dx = Width/2 - x;
+    int dy = Width/2 - y;
+
+    if (button == 3)
+        middle_mouse_pressed = 1;
     else if (button == 2)
        right_mouse_pressed = 1;
     else if (button == 4)
+    {
         zoom += zoom * 0.4;
+        delta_x -= dx * 0.002 / zoom;
+        delta_y -= dy * 0.00135 / zoom;
+    }
     else if (button == 5)
+    {
         zoom -= zoom * 0.4;
+        delta_x += dx * 0.002 / zoom;
+        delta_y += dy * 0.00135 / zoom;
+    }
+    xx = x;
+    yy = y;
     main();
 }
 
 int mouse_release(int button, int x, int y, void *param)
 {
-    if (button == 1)
-        left_mouse_pressed = 0;
+    if (button == 3)
+        middle_mouse_pressed = 0;
     else if (button == 2)
         right_mouse_pressed = 0;
     main();
@@ -75,16 +86,16 @@ int mouse_move(int x, int y, void *param)
         yy = y;
         xx = x;
     }
-    if (left_mouse_pressed)
+    if (middle_mouse_pressed)
     {
         if (dx > 0)
             delta_x += 0.005*dx / zoom;
         else if (dx < 0)
             delta_x += 0.005*dx / zoom ;
         if (dy > 0)
-            delta_y += 0.005*dy / zoom;
+            delta_y += 0.00335*dy / zoom;
         else if (dy < 0)
-            delta_y += 0.005*dy / zoom;
+            delta_y += 0.00335*dy / zoom;
         yy = y;
         xx = x;
     }
@@ -140,7 +151,7 @@ int plus_clicked(int key, void *parse)
 
 void    *row_calculate(void *argv)
 {
-    
+
     int x;
     double newRe, newIm, oldRe, oldIm;
 
@@ -177,7 +188,7 @@ void    *row_calculate(void *argv)
                 hsv.v = 255 * (i < MAX_ITERATIONS);
                 put_point_to_image(image_and_y->image_data, x, y, rgb_to_int(HsvToRgb(hsv)));
                 //printf("x y %i %i\n", x , y);
-                
+
                 x++;
    // printf("5\n");
         }
@@ -204,7 +215,7 @@ int main()
 	    int endian;
 
 	    bytes = 8;
-	    len = 1000;
+	    len = Width;
 	    endian = 0;
 
         mlx_ptr = mlx_init();
