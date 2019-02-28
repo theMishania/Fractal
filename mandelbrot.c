@@ -3,18 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   mandelbrot.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chorange <chorange@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cocummin <cocummin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 16:23:10 by cocummin          #+#    #+#             */
-/*   Updated: 2019/02/28 16:44:57 by chorange         ###   ########.fr       */
+/*   Updated: 2019/02/28 17:21:26 by cocummin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mlx.h"
 #include "HSVtoRGB.c"
+#include <pthread.h>
 
 #define MAX_ITERATIONS 300
-# define Width 400
+# define Width 600
 
 double zoom = 1;
 double delta_y = 0;
@@ -23,7 +24,15 @@ double delta_x = 0;
 int xx;
 int yy;
 
+unsigned int color;
+
 int middle_mouse_pressed = 0;
+
+typedef struct image_andAnd_y
+{
+    char *image_data;
+    int y;
+}          t_image_and_y;
 
 int mouse_press(int button, int x, int y, void *param)
 {
@@ -50,7 +59,7 @@ int mouse_press(int button, int x, int y, void *param)
 
 int mouse_release(int button, int x, int y, void *param)
 {
-    if (button == 1)
+    if (button == 3)
         middle_mouse_pressed = 0;
     //else if (key == 2)
     //    right_mouse_pressed = 0;
@@ -92,6 +101,8 @@ int plus_clicked(int key, void *parse)
         delta_y += 0.1;
     else if (key == 0x7D)
         delta_y -= 0.1;
+    else if (key == 0x08)
+        color += 0x000002;
     else if (key == 0x35)
         exit(-2);
     main();
@@ -121,37 +132,21 @@ void	clear_image_data(char *image_data)
 		image_data[index++] = 0;
 }
 
-int main()
+void    *row_calculate(void *argv)
 {
-    static void    *mlx_ptr;
-    static void    *win_ptr;
-    static void    *image;
-    static char     *image_data;
 
-    if (!(win_ptr))
-    {
-        int bytes;
-	    int len;
-	    int endian;
-
-	    bytes = 8;
-	    len = Width;
-	    endian = 0;
-
-        mlx_ptr = mlx_init();
-    win_ptr = mlx_new_window(mlx_ptr, Width, Width, "Mandelbrot");
-        image = mlx_new_image(mlx_ptr, Width, Width);
-        image_data = mlx_get_data_addr(image, &bytes, &len, &endian);
-    }
-
-
-
-    int x = 0;
-    int y = 0;
-    double pr, pi;           //real and imaginary part of the pixel p
+    int x;
     double newRe, newIm, oldRe, oldIm;
-    clear_image_data(image_data);
-    while (y < Width)
+    double pr, pi;
+
+    t_image_and_y *image_and_y;
+
+    image_and_y = (t_image_and_y *)argv;
+
+    int y = image_and_y->y;
+    //printf("%i\n", y);
+    int j = 0;
+    while (j < Width / 10)
     {
         x = 0;
         while (x < Width)
@@ -188,13 +183,67 @@ int main()
             // //alpha = alpha << 24;
             // //color = color + alpha;
             HsvColor hsv;
-            hsv.h = i % 256 - 12313123;
+            hsv.h = i % 256 + color;
             hsv.s = 255;
             hsv.v = 255 * (i < MAX_ITERATIONS);
-            put_point_to_image(image_data, x, y, rgb_to_int(HsvToRgb(hsv)));
+            put_point_to_image(image_and_y->image_data, x, y, rgb_to_int(HsvToRgb(hsv)));
             x++;
+   // printf("5\n");
         }
         y++;
+        j++;
+    }
+}
+
+int main()
+{
+    static void    *mlx_ptr;
+    static void    *win_ptr;
+    static void    *image;
+    static char     *image_data;
+    static pthread_t       pthreads[10];
+    t_image_and_y image_and_y[10];
+
+    if (!(win_ptr))
+    {
+        int bytes;
+	    int len;
+	    int endian;
+
+	    bytes = 8;
+	    len = Width;
+	    endian = 0;
+
+        mlx_ptr = mlx_init();
+    win_ptr = mlx_new_window(mlx_ptr, Width, Width, "Mandelbrot");
+        image = mlx_new_image(mlx_ptr, Width, Width);
+        image_data = mlx_get_data_addr(image, &bytes, &len, &endian);
+    }
+
+
+
+    int x = 0;
+    int y = 0;
+               //real and imaginary part of the pixel p
+    double newRe, newIm, oldRe, oldIm;
+    clear_image_data(image_data);
+
+    int j = 0;
+
+    while (y < Width)
+    {
+        image_and_y[j].image_data = image_data;
+        image_and_y[j].y = y;
+        pthread_create(&(pthreads[j]), NULL, row_calculate, &(image_and_y[j]));
+        y += Width / 10;
+        j++;
+    }
+
+    int i = 0;
+    while (i < 10)
+    {
+        pthread_join(pthreads[i], NULL);
+        i++;
     }
     mlx_put_image_to_window(mlx_ptr, win_ptr, image, 0, 0);
 

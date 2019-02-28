@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   julia.c                                            :+:      :+:    :+:   */
+/*   thirdShit.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cocummin <cocummin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/27 17:18:41 by cocummin          #+#    #+#             */
-/*   Updated: 2019/02/28 17:27:58 by cocummin         ###   ########.fr       */
+/*   Created: 2019/02/28 15:05:14 by cocummin          #+#    #+#             */
+/*   Updated: 2019/02/28 17:33:04 by cocummin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 double zoom = 1;
 double delta_y = 0;
 double delta_x = 0;
-double cRe = -0.7f;
-double cIm = 0.29015f;
+double cRe = 0.167366;
+double cIm = 0.689801;
 int middle_mouse_pressed = 0;
 int right_mouse_pressed = 0;
 int xx;
@@ -180,8 +180,8 @@ void    *row_calculate(void *argv)
                     oldRe = newRe;
                     oldIm = newIm;
                     //the actual iteration, the real and imaginary part are calculated
-                    newRe = oldRe * oldRe - oldIm * oldIm + cRe;
-                    newIm = 2 * oldRe * oldIm + cIm;
+                    newRe = oldRe * oldRe * oldRe - 3 * oldRe * oldIm + cRe;
+                    newIm = 3 * oldRe  * oldRe * oldIm - oldIm +  cIm;
                     if ((newRe * newRe + newIm * newIm) > 4)
                         break;
                 }
@@ -313,3 +313,4 @@ int main()
     mlx_loop(mlx_ptr);
     return(0);
 }
+
