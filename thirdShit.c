@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   thirdShit.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cocummin <cocummin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cocummin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 15:05:14 by cocummin          #+#    #+#             */
-/*   Updated: 2019/02/28 19:42:14 by cocummin         ###   ########.fr       */
+/*   Updated: 2019/03/04 12:37:48 by cocummin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,7 @@ void    *row_calculate(void *argv)
     int y = image_and_y->y;
     //printf("%i\n", y);
     int j = 0;
-    while (j < 60)
+    while (j < Width / 10)
     {
         x = 0;
         while (x < Width)
@@ -278,7 +278,7 @@ int mishaniabrot(void   *mlx_ptr)
         //     x++;
         // }
         ///y += 200;
-        y += 60;
+        y += Width / 10;
         j++;
     }
 

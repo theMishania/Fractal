@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cocummin <cocummin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cocummin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 18:42:57 by cocummin          #+#    #+#             */
-/*   Updated: 2019/02/28 19:41:18 by cocummin         ###   ########.fr       */
+/*   Updated: 2019/03/02 11:13:20 by cocummin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,6 @@
 #include "julia.c"
 #include "thirdShit.c"
 #include "mandelbrot.c"
-void    *open_another_window(void *argv)
-{
-    
-}
 
 int main()
 {
