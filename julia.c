@@ -6,7 +6,7 @@
 /*   By: cocummin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 17:18:41 by cocummin          #+#    #+#             */
-/*   Updated: 2019/03/04 13:38:29 by cocummin         ###   ########.fr       */
+/*   Updated: 2019/03/06 11:25:46 by cocummin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct s_julia_struct
     double julia_delta_x;
     double julia_cRe;
     double julia_cIm;
+    unsigned int julia_color;
 }                   t_julia_struct;
 
 
@@ -235,6 +236,7 @@ int julia(void *mlx_ptr)
     julia_amage_and_y image_and_y[10];
 
 
+
     //------OpenCL--------------------
     static cl_int          ret;
     static cl_platform_id  platform_id;
@@ -267,6 +269,7 @@ int julia(void *mlx_ptr)
     julia_struct.julia_delta_x = julia_delta_x;
     julia_struct.julia_cRe = julia_cRe;
     julia_struct.julia_cIm = julia_cIm;
+    julia_struct.julia_color = julia_color;
     
 
 
@@ -279,6 +282,7 @@ int julia(void *mlx_ptr)
 	    bytes = 8;
 	    len = Width;
 	    endian = 0;
+
 
         //mlx_ptr = mlx_init();
         win_ptr = mlx_new_window(mlx_ptr, Width, Width, "Julia");
@@ -362,6 +366,8 @@ int julia(void *mlx_ptr)
     mlx_hook(win_ptr, 4, 1L << 0, julia_mouse_press, mlx_ptr);
     mlx_hook(win_ptr, 5, 1L << 0, julia_mouse_release, mlx_ptr);
     mlx_hook(win_ptr, 6, 1L << 0, julia_mouse_move, mlx_ptr);
+    
+    //mandelbrot(mlx_ptr);
     //mishaniabrot(mlx_ptr);
     //mlx_key_hook(win_ptr, plus_clicked, (void *)0);
     mlx_loop(mlx_ptr);

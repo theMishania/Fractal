@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mandelbrot.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cocummin <cocummin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cocummin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 16:23:10 by cocummin          #+#    #+#             */
-/*   Updated: 2019/02/28 19:43:54 by cocummin         ###   ########.fr       */
+/*   Updated: 2019/03/06 11:26:29 by cocummin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,20 @@
 double man_zoom = 1;
 double man_delta_y = 0;
 double man_delta_x = 0;
+unsigned int man_color = 1312;
+
+typedef struct s_man_struct
+{
+    double man_zoom;
+    double man_delta_y;
+    double man_delta_x;
+    unsigned int man_color;
+}               t_man_struct;
 
 int man_xx;
 int man_yy;
 
-unsigned int man_color = 1312;
+
 
 int man_middle_mouse_pressed = 0;
 
@@ -124,7 +133,7 @@ void	man_put_point_to_image(char *image_data, int x, int y, int man_color)
 	}
 }
 
-void	man_ckear_image_data(char *image_data)
+void	man_clear_image_data(char *image_data)
 {
 	int index;
 
@@ -167,29 +176,13 @@ void    *man_row_calculations(void *argv)
                 if ((newRe * newRe + newIm * newIm) > 4)
                     break;
             }
-            // if ((newRe * newRe + newIm * newIm) > 4)
-            // {
-            //     mlx_pixel_put(mlx_ptr, win_ptr, x, y, 0x000000);
-            // }
-            // else
-            // {
-            //     int man_color = i % 255;
-            //     printf("%i\n", man_color);
-            //     mlx_pixel_put(mlx_ptr, win_ptr, x, y, man_color);
-            // }
-            // unsigned int man_color = i % 255;
-            // if (man_color > 60)
-            //     man_color += 123123123;
-            // //unsigned int alpha = 255 * (i < MAX_ITERATIONS);
-            // //alpha = alpha << 24;
-            // //man_color = man_color + alpha;
+
             HsvColor hsv;
             hsv.h = i % 256 + man_color;
             hsv.s = 255;
             hsv.v = 255 * (i < MAX_ITERATIONS);
             man_put_point_to_image(image_and_y->image_data, x, y, rgb_to_int(HsvToRgb(hsv)));
             x++;
-   // printf("5\n");
         }
         y++;
         j++;
@@ -205,6 +198,40 @@ int mandelbrot(void *mlx_ptr)
     static pthread_t       pthreads[10];
     man_image_and_y image_and_y[10];
 
+
+    //------OpenCL--------------------
+    static cl_int          ret;
+    static cl_platform_id  platform_id;
+    static cl_uint         ret_num_platforms;
+
+    static cl_device_id device_id;
+    static cl_uint ret_num_devices;
+
+    static cl_context context;
+    static cl_command_queue command_queue;
+
+    static cl_program program = NULL;
+    static cl_kernel kernel = NULL;
+
+     static FILE *fd;
+
+    static const char fileName[] = "mandelbrot_kernel.cl";
+    static size_t source_size;
+    static char *source_str;
+
+    static cl_mem memobj = NULL;
+
+    static cl_mem man_memobj = NULL;
+
+//-------------------------------------------------------
+
+    t_man_struct man_struct;
+
+    man_struct.man_zoom = man_zoom;
+    man_struct.man_delta_x = man_delta_x;
+    man_struct.man_delta_y = man_delta_y;
+    man_struct.man_color = man_color;
+
     if (!(win_ptr))
     {
         int bytes;
@@ -216,36 +243,53 @@ int mandelbrot(void *mlx_ptr)
 	    endian = 0;
 
         //mlx_ptr = mlx_init();
-    win_ptr = mlx_new_window(mlx_ptr, Width, Width, "Mandelbrot");
+        win_ptr = mlx_new_window(mlx_ptr, Width, Width, "Mandelbrot");
         image = mlx_new_image(mlx_ptr, Width, Width);
         image_data = mlx_get_data_addr(image, &bytes, &len, &endian);
+
+        //OpenCl_Init----------------------------------------------
+        ret = clGetPlatformIDs(1, &platform_id, &ret_num_platforms);
+        ret = clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_GPU, 1, &device_id, &ret_num_devices);
+
+        context = clCreateContext(NULL, 1, &device_id, NULL, NULL, &ret);
+        command_queue = clCreateCommandQueue(context, device_id, 0, &ret);
+
+        fd = fopen(fileName, "r");
+        if (!fd)
+        {
+            printf("Cannot open kernel file\n");
+            exit(1);
+        }
+        source_str = (char *)malloc(4000);
+        source_size = fread(source_str, 1, 4000, fd);
+        fclose(fd);
+
+        program = clCreateProgramWithSource(context, 1,(const char **)&source_str, (const size_t *)&source_size,  &ret);
+        ret = clBuildProgram(program, 1, &device_id, NULL, NULL, NULL);
+        kernel = clCreateKernel(program, "mandelbrot", &ret);
+
+
+        memobj = clCreateBuffer(context, CL_MEM_READ_WRITE, Width * Width * 4, NULL, &ret);
+        man_memobj = clCreateBuffer(context, CL_MEM_READ_WRITE, sizeof(t_man_struct), NULL, &ret);
+
+        ret = clEnqueueWriteBuffer(command_queue, memobj, CL_TRUE, 0, Width * Width * 4, image_data, 0, NULL, NULL);
+       // ret = clEnqueueWriteBuffer(command_queue, julia_memobj, CL_TRUE, 0, sizeof(t_julia_struct), &julia_struct, 0, NULL, NULL);
+
+        ret = clSetKernelArg(kernel, 0, sizeof(cl_mem), (void *)&memobj);
+       // ret = clSetKernelArg(kernel, 1, sizeof(cl_mem), (void *)&julia_memobj);
     }
 
 
+    ret = clEnqueueWriteBuffer(command_queue, man_memobj, CL_TRUE, 0, sizeof(t_man_struct), &man_struct, 0, NULL, NULL);
+    ret = clSetKernelArg(kernel, 1, sizeof(cl_mem), (void *)&man_memobj);
 
-    int x = 0;
-    int y = 0;
-               //real and imaginary part of the pixel p
-    double newRe, newIm, oldRe, oldIm;
-    man_ckear_image_data(image_data);
 
-    int j = 0;
+    size_t global_work_size = Width * Width;
 
-    while (y < Width)
-    {
-        image_and_y[j].image_data = image_data;
-        image_and_y[j].y = y;
-        pthread_create(&(pthreads[j]), NULL, man_row_calculations, &(image_and_y[j]));
-        y += Width / 10;
-        j++;
-    }
+    ret = clEnqueueNDRangeKernel(command_queue, kernel, 1, NULL, &global_work_size, NULL, 0, NULL, NULL);
 
-    int i = 0;
-    while (i < 10)
-    {
-        pthread_join(pthreads[i], NULL);
-        i++;
-    }
+    ret = clEnqueueReadBuffer(command_queue, memobj, CL_TRUE, 0, Width * Width * 4, image_data, 0, NULL, NULL);
+
     mlx_put_image_to_window(mlx_ptr, win_ptr, image, 0, 0);
 
     mlx_hook(win_ptr, 2, 1L << 0, man_plus_clicked, mlx_ptr);

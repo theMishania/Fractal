@@ -1,7 +1,7 @@
 # define MAX_ITERATIONS 400
 # define WIDTH 1024
 
-void	julia_kernel_put_point_to_image(__global char *image_data, int x, int y, int julia_color)
+void	man_kernel_put_point_to_image(__global char *image_data, int x, int y, int man_color)
 {
 	int	index = 0;
 
@@ -10,21 +10,19 @@ void	julia_kernel_put_point_to_image(__global char *image_data, int x, int y, in
 	else
 	{
 		index = WIDTH * y * 4 + x * 4;
-        image_data[index] = julia_color & 0x0000ff;
-		image_data[index + 2] = julia_color >> 16; // red
-		image_data[index + 1] = (julia_color & 0x00ff00) >> 8; //green
+        image_data[index] = man_color & 0x0000ff;
+		image_data[index + 2] = man_color >> 16; // red
+		image_data[index + 1] = (man_color & 0x00ff00) >> 8; //green
 	}
 }
 
-typedef struct s_julia_struct
+typedef struct s_man_struct
 {
-    double  julia_zoom;
-    double julia_delta_y;
-    double julia_delta_x;
-    double julia_cRe;
-    double julia_cIm;
-    unsigned int julia_color;
-}                   t_julia_struct;
+    double man_zoom;
+    double man_delta_y;
+    double man_delta_x;
+    unsigned int man_color;
+}               t_man_struct;
 
 typedef struct RgbColor
 {
@@ -108,7 +106,7 @@ int rgb_to_int(RgbColor rgb)
 
 
 
-__kernel void julia(__global char *image_data, __global t_julia_struct *julia_struct)
+__kernel void mandelbrot(__global char *image_data, __global t_man_struct *man_struct)
 {
     int y = get_global_id(0) / WIDTH; 
     int x = get_global_id(0) % WIDTH;
@@ -117,29 +115,29 @@ __kernel void julia(__global char *image_data, __global t_julia_struct *julia_st
     //int julia_color = 0xFF0000;
 
     double newRe, newIm, oldRe, oldIm;
+    double pr, pi;
 
     // while (x < ((y % 2 == 0) ? 300 : 600))
     // {
     //     y = y / 2;
-        newRe = 1 * (x - WIDTH / 2) / (0.5 *    julia_struct->julia_zoom * WIDTH) + julia_struct->julia_delta_x;
-        newIm = (y - WIDTH / 2) / (0.5 *    julia_struct->julia_zoom * WIDTH) + julia_struct->julia_delta_y;
+        pr = 1 * (x - WIDTH / 2) / (0.5 * 1 * WIDTH * man_struct->man_zoom) + -0.5 + man_struct->man_delta_x;
+        pi = (y - WIDTH / 2) / (0.5 * 1 * WIDTH * man_struct->man_zoom) + 0 + man_struct->man_delta_y;
+        newRe = newIm = oldRe = oldIm = 0;
         int i = 0;
-        while (i++ < 400)
+        while (i++ < MAX_ITERATIONS)
         {
             //remember value of previous iteration
             oldRe = newRe;
             oldIm = newIm;
-            //the actual iteration, the real and imaginary part are calculated
-            newRe = oldRe * oldRe - oldIm * oldIm + julia_struct->julia_cRe;
-            newIm = 2 * oldRe * oldIm + julia_struct->julia_cIm;
+                //the actual iteration, the real and imaginary part are calculated
+            newRe = oldRe * oldRe - oldIm * oldIm + pr;
+            newIm = 2 * oldRe * oldIm + pi;
             if ((newRe * newRe + newIm * newIm) > 4)
                 break;
         }
-
         HsvColor hsv;
-        hsv.h = i % 256 + julia_struct->julia_color;
+        hsv.h = i % 256 + man_struct->man_color;
         hsv.s = 255;
         hsv.v = 255 * (i < MAX_ITERATIONS);
-        julia_kernel_put_point_to_image(image_data, x, y, rgb_to_int(HsvToRgb(hsv)));
+        man_kernel_put_point_to_image(image_data, x, y, rgb_to_int(HsvToRgb(hsv)));
 }
-
