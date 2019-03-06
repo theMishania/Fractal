@@ -6,7 +6,7 @@
 /*   By: cocummin <cocummin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 15:05:14 by cocummin          #+#    #+#             */
-/*   Updated: 2019/03/06 17:36:44 by cocummin         ###   ########.fr       */
+/*   Updated: 2019/03/06 20:04:37 by cocummin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -326,7 +326,7 @@ int burning_ship(void   *mlx_ptr)
     mlx_hook(win_ptr, 6, 1L << 0, mouse_move, mlx_ptr);
     //mandelbrot(mlx_ptr);
     //mlx_key_hook(win_ptr, plus_clicked, (void *)0);
-    mlx_loop(mlx_ptr);
+    //mlx_loop(mlx_ptr);
     return(0);
 }
 

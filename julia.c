@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   julia.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cocummin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cocummin <cocummin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 17:18:41 by cocummin          #+#    #+#             */
-/*   Updated: 2019/03/06 11:25:46 by cocummin         ###   ########.fr       */
+/*   Updated: 2019/03/06 20:04:38 by cocummin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -370,6 +370,6 @@ int julia(void *mlx_ptr)
     //mandelbrot(mlx_ptr);
     //mishaniabrot(mlx_ptr);
     //mlx_key_hook(win_ptr, plus_clicked, (void *)0);
-    mlx_loop(mlx_ptr);
+    //mlx_loop(mlx_ptr);
     return(0);
 }
