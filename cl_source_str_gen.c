@@ -6,7 +6,7 @@
 /*   By: chorange <chorange@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/12 22:00:54 by chorange          #+#    #+#             */
-/*   Updated: 2019/03/12 22:01:27 by chorange         ###   ########.fr       */
+/*   Updated: 2019/03/12 22:15:03 by chorange         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void    find_window_size_define(char **define)
     }
     while (get_next_line(fd, define))
     {
-		if (strstr(*define, "WIDTH"))
+		if (ft_strstr(*define, "WIDTH"))
 			break ;
         free(*define);
     }
