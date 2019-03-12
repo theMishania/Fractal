@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keys_handling.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cocummin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: chorange <chorange@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 21:15:50 by cocummin          #+#    #+#             */
-/*   Updated: 2019/03/12 15:28:31 by cocummin         ###   ########.fr       */
+/*   Updated: 2019/03/12 19:16:38 by chorange         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@ int mouse_press(int button, int x, int y, void *param)
     else if (button == 4)
     {
         fractal->transform.zoom += fractal->transform.zoom * 0.4;
-        fractal->transform.delta_x -= dx * 0.00135 / fractal->transform.zoom;
-        fractal->transform.delta_y -= dy * 0.00135 /  fractal->transform.zoom;
+        fractal->transform.delta_x -= dx * 0.8044 / fractal->transform.zoom / WIDTH;
+        fractal->transform.delta_y -= dy * 0.8044/  fractal->transform.zoom / WIDTH;
     }
     else if (button == 5)
     {
         fractal->transform.zoom -= fractal->transform.zoom * 0.4;
-        fractal->transform.delta_x += dx * 0.00135 /   fractal->transform.zoom;
-        fractal->transform.delta_y += dy * 0.00135 /   fractal->transform.zoom;
+        fractal->transform.delta_x += dx * 0.8044 / fractal->transform.zoom / WIDTH;
+        fractal->transform.delta_y += dy * 0.8044/   fractal->transform.zoom / WIDTH;
     }
     fractal->transform.xx = x;
     fractal->transform.yy = y;
@@ -76,15 +76,15 @@ int mouse_move(int x, int y, void *param)
     if (fractal->transform.middle_mouse_pressed)
     {
         if (dx > 0)
-            fractal->transform.delta_x += 0.00335*dx / fractal->transform.zoom;
+            fractal->transform.delta_x += 2 * dx / fractal->transform.zoom / WIDTH;
         else if (dx < 0)
-            fractal->transform.delta_x += 0.00335*dx / fractal->transform.zoom;
+            fractal->transform.delta_x += 2 * dx / fractal->transform.zoom / WIDTH;
         if (dy > 0)
-            fractal->transform.delta_y += 0.00335*dy / fractal->transform.zoom;
+            fractal->transform.delta_y += 2 * dy / fractal->transform.zoom / WIDTH;
         else if (dy < 0)
-            fractal->transform.delta_y += 0.00335*dy / fractal->transform.zoom;
+            fractal->transform.delta_y += 2 * dy / fractal->transform.zoom / WIDTH;
         fractal->transform.yy = y;
-        fractal->transform.xx  = x;
+        fractal->transform.xx = x;
     }
     draw_fractal(fractal);
     //julia(param);

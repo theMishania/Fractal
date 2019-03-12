@@ -1,5 +1,5 @@
 //# define MAX_ITERATIONS 400
-# define WIDTH 1024
+# define WIDTH 500
 
 void	julia_kernel_put_point_to_image(__global char *image_data, int x, int y, int julia_color)
 {
@@ -60,7 +60,7 @@ RgbColor HsvToRgb(HsvColor hsv)
     }
 
     region = hsv.h / 43;
-    remainder = (hsv.h - (region * 43)) * 6; 
+    remainder = (hsv.h - (region * 43)) * 6;
 
     p = (hsv.v * (255 - hsv.s)) >> 8;
     q = (hsv.v * (255 - ((hsv.s * remainder) >> 8))) >> 8;
@@ -116,7 +116,7 @@ int rgb_to_int(RgbColor rgb)
 
 __kernel void julia(__global char *image_data, __global t_transform *transform)
 {
-    int y = get_global_id(0) / WIDTH; 
+    int y = get_global_id(0) / WIDTH;
     int x = get_global_id(0) % WIDTH;
 
     //int x = (y % 2 == 0) ? 0 : 300;
