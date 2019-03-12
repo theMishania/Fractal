@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fractal_init.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cocummin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: chorange <chorange@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 12:30:28 by cocummin          #+#    #+#             */
-/*   Updated: 2019/03/12 15:18:43 by cocummin         ###   ########.fr       */
+/*   Updated: 2019/03/12 22:01:22 by chorange         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void    fractal_init(t_fractal *fractal)
         fractal->image = mlx_new_image(fractal->mlx_ptr, WIDTH, WIDTH);
         fractal->image_data = mlx_get_data_addr(fractal->image, &bytes, &len, &endian);
 
-        
+
         //OpenCl_Init----------------------------------------------
         fractal->ret = clGetPlatformIDs(1, &fractal->platform_id, &fractal->ret_num_platforms);
         fractal->ret = clGetDeviceIDs(fractal->platform_id, CL_DEVICE_TYPE_GPU, 1, &fractal->device_id, &fractal->ret_num_devices);
@@ -53,7 +53,7 @@ void    fractal_init(t_fractal *fractal)
         fractal->context = clCreateContext(NULL, 1, &fractal->device_id, NULL, NULL, &fractal->ret);
         fractal->command_queue = clCreateCommandQueue(fractal->context, fractal->device_id, 0, &fractal->ret);
 
-        fractal->fd = fopen(fractal->file_name, "r");
+        /*fractal->fd = open(fractal->file_name, "r");
         if (!fractal->fd)
         {
             printf("Cannot open kernel file\n");
@@ -61,8 +61,10 @@ void    fractal_init(t_fractal *fractal)
         }
 
         fractal->source_str = (char *)malloc(4000);
-        fractal->source_size = fread(fractal->source_str, 1, 4000, fractal->fd);
-        fclose(fractal->fd);
+        fractal->source_size = read(fractal->fd, fractal->source_str, 4000);
+        close(fractal->fd);*/
+
+        fractal->source_size = cl_source_str_gen(fractal->file_name, &(fractal->source_str));
 
         fractal->program = clCreateProgramWithSource(fractal->context, 1,(const char **)&fractal->source_str, (const size_t *)&fractal->source_size,  &fractal->ret);
         fractal->ret = clBuildProgram(fractal->program, 1, &fractal->device_id, NULL, NULL, NULL);

@@ -6,15 +6,17 @@
 /*   By: chorange <chorange@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/07 21:08:08 by cocummin          #+#    #+#             */
-/*   Updated: 2019/03/12 19:17:25 by chorange         ###   ########.fr       */
+/*   Updated: 2019/03/12 22:04:20 by chorange         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include <unistd.h>
 #include <OpenCL/opencl.h>
 #include "minilibx/mlx.h"
 #include "libft/libft.h"
-#define WIDTH 500
+#include "get_next_line/get_next_line.h"
+#define WIDTH 1024
 
 typedef enum e_fractal_type
 {
