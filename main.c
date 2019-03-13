@@ -3,27 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cocummin <cocummin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chorange <chorange@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 18:42:57 by cocummin          #+#    #+#             */
-/*   Updated: 2019/03/13 18:52:01 by cocummin         ###   ########.fr       */
+/*   Updated: 2019/03/13 20:05:45 by chorange         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractals.h"
 
-int		main(int argc, char **argv)
+static void	utils_create(void *mlx_ptr, int argc, t_fractal *fractals)
 {
-	void	*mlx_ptr;
+	int i;
 
-	arguments_check(argc, argv);
-	mlx_ptr = mlx_init();
-	initiate_fractals(mlx_ptr, argc, argv);
-	mlx_loop(mlx_ptr);
-	return (0);
+	i = 1;
+	while (i < argc)
+	{
+		fractals[i - 1].mlx_ptr = mlx_ptr;
+		i++;
+	}
 }
 
-void	initiate_fractals(void *mlx_ptr, int argc, char **argv)
+static void	initiate_fractals(void *mlx_ptr, int argc, char **argv)
 {
 	int					i;
 	static t_fractal	fractals[6];
@@ -47,14 +48,13 @@ void	initiate_fractals(void *mlx_ptr, int argc, char **argv)
 	}
 }
 
-void	utils_create(void *mlx_ptr, int argc, t_fractal *fractals)
+int			main(int argc, char **argv)
 {
-	int i;
+	void	*mlx_ptr;
 
-	i = 1;
-	while (i < argc)
-	{
-		fractals[i - 1].mlx_ptr = mlx_ptr;
-		i++;
-	}
+	arguments_check(argc, argv);
+	mlx_ptr = mlx_init();
+	initiate_fractals(mlx_ptr, argc, argv);
+	mlx_loop(mlx_ptr);
+	return (0);
 }

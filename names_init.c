@@ -3,16 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   names_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cocummin <cocummin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chorange <chorange@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 13:28:04 by cocummin          #+#    #+#             */
-/*   Updated: 2019/03/13 18:17:20 by cocummin         ###   ########.fr       */
+/*   Updated: 2019/03/13 20:02:46 by chorange         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractals.h"
 
-void	names_init(t_fractal *fractal)
+static void	names_init_2(t_fractal *fractal)
+{
+	if (fractal->fractal_type == ship)
+	{
+		ft_strcpy(fractal->file_name, "kernels/ship_kernel.cl\0");
+		ft_strcpy(fractal->win_name, "Burning Ship\0");
+		ft_strcpy(fractal->kernel_name, "ship\0");
+	}
+	else if (fractal->fractal_type == spider)
+	{
+		ft_strcpy(fractal->file_name, "kernels/spider_kernel.cl\0");
+		ft_strcpy(fractal->win_name, "Spider\0");
+		ft_strcpy(fractal->kernel_name, "spider\0");
+	}
+}
+
+void		names_init(t_fractal *fractal)
 {
 	fractal->file_name = (char *)malloc(40);
 	fractal->win_name = (char *)malloc(40);
@@ -38,21 +54,5 @@ void	names_init(t_fractal *fractal)
 	else
 	{
 		names_init_2(fractal);
-	}
-}
-
-void	names_init_2(t_fractal *fractal)
-{
-	if (fractal->fractal_type == ship)
-	{
-		ft_strcpy(fractal->file_name, "kernels/ship_kernel.cl\0");
-		ft_strcpy(fractal->win_name, "Burning Ship\0");
-		ft_strcpy(fractal->kernel_name, "ship\0");
-	}
-	else if (fractal->fractal_type == spider)
-	{
-		ft_strcpy(fractal->file_name, "kernels/spider_kernel.cl\0");
-		ft_strcpy(fractal->win_name, "Spider\0");
-		ft_strcpy(fractal->kernel_name, "spider\0");
 	}
 }

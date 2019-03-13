@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   fractal_init.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cocummin <cocummin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chorange <chorange@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 12:30:28 by cocummin          #+#    #+#             */
-/*   Updated: 2019/03/13 18:45:47 by cocummin         ###   ########.fr       */
+/*   Updated: 2019/03/13 20:02:11 by chorange         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractals.h"
 
-void	transform_init(t_fractal *fractal)
+void		transform_init(t_fractal *fractal)
 {
 	if (fractal->fractal_type == mandelbrot)
 		mandelbrot_utils(&fractal->transform);
@@ -27,7 +27,33 @@ void	transform_init(t_fractal *fractal)
 	fractal->transform.max_iterations = 50;
 }
 
-void	fractal_init(t_fractal *fractal)
+static void	fractal_init_2(t_fractal *fractal)
+{
+	fractal->context = clCreateContext(NULL, 1, &fractal->device_id,
+			NULL, NULL, &fractal->ret);
+	fractal->command_queue = clCreateCommandQueue(fractal->context,
+			fractal->device_id, 0, &fractal->ret);
+	fractal->source_size = cl_source_str_gen(fractal->file_name,
+			&(fractal->source_str));
+	fractal->program = clCreateProgramWithSource(fractal->context, 1,
+			(const char **)&fractal->source_str,
+			(const size_t *)&fractal->source_size, &fractal->ret);
+	fractal->ret = clBuildProgram(fractal->program, 1,
+			&fractal->device_id, NULL, NULL, NULL);
+	fractal->kernel = clCreateKernel(fractal->program,
+			fractal->kernel_name, &fractal->ret);
+	fractal->memobj = clCreateBuffer(fractal->context,
+			CL_MEM_READ_WRITE, WIDTH * WIDTH * 4, NULL, &fractal->ret);
+	fractal->utils_memobj = clCreateBuffer(fractal->context,
+			CL_MEM_READ_WRITE, sizeof(t_transform), NULL, &fractal->ret);
+	fractal->ret = clEnqueueWriteBuffer(fractal->command_queue,
+			fractal->memobj, CL_TRUE, 0, WIDTH * WIDTH * 4,
+			fractal->image_data, 0, NULL, NULL);
+	fractal->ret = clSetKernelArg(fractal->kernel, 0,
+			sizeof(cl_mem), (void *)&fractal->memobj);
+}
+
+void		fractal_init(t_fractal *fractal)
 {
 	int bytes;
 	int len;
@@ -53,30 +79,4 @@ void	fractal_init(t_fractal *fractal)
 	free(fractal->win_name);
 	free(fractal->kernel_name);
 	free(fractal->file_name);
-}
-
-void	fractal_init_2(t_fractal *fractal)
-{
-	fractal->context = clCreateContext(NULL, 1, &fractal->device_id,
-			NULL, NULL, &fractal->ret);
-	fractal->command_queue = clCreateCommandQueue(fractal->context,
-			fractal->device_id, 0, &fractal->ret);
-	fractal->source_size = cl_source_str_gen(fractal->file_name,
-			&(fractal->source_str));
-	fractal->program = clCreateProgramWithSource(fractal->context, 1,
-			(const char **)&fractal->source_str,
-			(const size_t *)&fractal->source_size, &fractal->ret);
-	fractal->ret = clBuildProgram(fractal->program, 1,
-			&fractal->device_id, NULL, NULL, NULL);
-	fractal->kernel = clCreateKernel(fractal->program,
-			fractal->kernel_name, &fractal->ret);
-	fractal->memobj = clCreateBuffer(fractal->context,
-			CL_MEM_READ_WRITE, WIDTH * WIDTH * 4, NULL, &fractal->ret);
-	fractal->utils_memobj = clCreateBuffer(fractal->context,
-			CL_MEM_READ_WRITE, sizeof(t_transform), NULL, &fractal->ret);
-	fractal->ret = clEnqueueWriteBuffer(fractal->command_queue,
-			fractal->memobj, CL_TRUE, 0, WIDTH * WIDTH * 4,
-			fractal->image_data, 0, NULL, NULL);
-	fractal->ret = clSetKernelArg(fractal->kernel, 0,
-			sizeof(cl_mem), (void *)&fractal->memobj);
 }
