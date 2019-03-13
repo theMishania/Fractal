@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keys_handling.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chorange <chorange@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cocummin <cocummin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 21:15:50 by cocummin          #+#    #+#             */
-/*   Updated: 2019/03/12 19:16:38 by chorange         ###   ########.fr       */
+/*   Updated: 2019/03/13 17:22:35 by cocummin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,4 +117,15 @@ int plus_clicked(int key, void *param)
         exit(-2);
     draw_fractal(fractal);
     return (0);
+}
+
+int close_window(void *param)
+{
+	int *windows_count;
+
+	windows_count = (int *)param;
+	if (*windows_count == 1)
+		exit(-2);
+	(*windows_count)--;
+	return (0);
 }

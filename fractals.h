@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fractals.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chorange <chorange@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cocummin <cocummin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/07 21:08:08 by cocummin          #+#    #+#             */
-/*   Updated: 2019/03/12 22:04:20 by chorange         ###   ########.fr       */
+/*   Updated: 2019/03/13 17:20:08 by cocummin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,3 +103,4 @@ int mouse_press(int button, int x, int y, void *param);
 int mouse_release(int button, int x, int y, void *param);
 int mouse_move(int x, int y, void *param);
 int plus_clicked(int key, void *param);
+int close_window(void *param);
