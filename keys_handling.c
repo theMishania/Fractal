@@ -6,120 +6,135 @@
 /*   By: cocummin <cocummin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 21:15:50 by cocummin          #+#    #+#             */
-/*   Updated: 2019/03/13 17:22:35 by cocummin         ###   ########.fr       */
+/*   Updated: 2019/03/13 19:34:26 by cocummin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractals.h"
 
-int mouse_press(int button, int x, int y, void *param)
+int	mouse_press(int button, int x, int y, void *param)
 {
-    int dx = WIDTH/2 - x;
-    int dy = WIDTH/2 - y;
-    t_fractal *fractal;
+	int			dx;
+	int			dy;
+	t_fractal	*fractal;
 
-    fractal = (t_fractal *)param;
-    if (button == 3)
-        fractal->transform.middle_mouse_pressed = 1;
-    else if (button == 2)
-       fractal->transform.right_mouse_pressed = 1;
-    else if (button == 4)
-    {
-        fractal->transform.zoom += fractal->transform.zoom * 0.4;
-        fractal->transform.delta_x -= dx * 0.8044 / fractal->transform.zoom / WIDTH;
-        fractal->transform.delta_y -= dy * 0.8044/  fractal->transform.zoom / WIDTH;
-    }
-    else if (button == 5)
-    {
-        fractal->transform.zoom -= fractal->transform.zoom * 0.4;
-        fractal->transform.delta_x += dx * 0.8044 / fractal->transform.zoom / WIDTH;
-        fractal->transform.delta_y += dy * 0.8044/   fractal->transform.zoom / WIDTH;
-    }
-    fractal->transform.xx = x;
-    fractal->transform.yy = y;
-    //julia(param);
-    draw_fractal(fractal);
+	dx = WIDTH / 2 - x;
+	dy = WIDTH / 2 - y;
+	fractal = (t_fractal *)param;
+	if (button == 3)
+		fractal->transform.middle_mouse_pressed = 1;
+	else if (button == 2)
+		fractal->transform.right_mouse_pressed = 1;
+	else if (button == 4)
+	{
+		fractal->transform.zoom += fractal->transform.zoom * 0.4;
+		fractal->transform.delta_x -= dx *
+			0.8044 / fractal->transform.zoom / WIDTH;
+		fractal->transform.delta_y -= dy *
+			0.8044 / fractal->transform.zoom / WIDTH;
+	}
+	else if (button == 5)
+	{
+		fractal->transform.zoom -= fractal->transform.zoom * 0.4;
+		fractal->transform.delta_x += dx *
+			0.8044 / fractal->transform.zoom / WIDTH;
+		fractal->transform.delta_y += dy *
+			0.8044 / fractal->transform.zoom / WIDTH;
+	}
+	fractal->transform.xx = x;
+	fractal->transform.yy = y;
+	draw_fractal(fractal);
+	return (0);
 }
 
-int mouse_release(int button, int x, int y, void *param)
+int	mouse_release(int button, int x, int y, void *param)
 {
-    t_fractal *fractal;
+	t_fractal *fractal;
 
-    fractal = (t_fractal *)param;
-    if (button == 3)
-        fractal->transform.middle_mouse_pressed = 0;
-    else if (button == 2)
-        fractal->transform.right_mouse_pressed  = 0;
-    draw_fractal(fractal);
+	fractal = (t_fractal *)param;
+	(void)x;
+	(void)y;
+	if (button == 3)
+		fractal->transform.middle_mouse_pressed = 0;
+	else if (button == 2)
+		fractal->transform.right_mouse_pressed = 0;
+	draw_fractal(fractal);
+	return (0);
 }
 
-int mouse_move(int x, int y, void *param)
+int	mouse_move(int x, int y, void *param)
 {
-    t_fractal *fractal;
+	t_fractal	*fractal;
+	int			dx;
+	int			dy;
 
-    fractal = (t_fractal *)param;
-    int dx = fractal->transform.xx - x;
-    int dy = fractal->transform.yy - y;
-    if (fractal->transform.right_mouse_pressed)
-    {
-        if (dx > 0)
-            fractal->transform.c_re += 0.01f /  fractal->transform.zoom;
-        else if (dx < 0)
-            fractal->transform.c_re -= 0.01f /  fractal->transform.zoom ;
-        if (dy > 0)
-            fractal->transform.c_im += 0.01f /  fractal->transform.zoom;
-        else if (dy < 0)
-            fractal->transform.c_im -= 0.01f /  fractal->transform.zoom;
-        fractal->transform.yy = y;
-        fractal->transform.xx = x;
-    }
-    if (fractal->transform.middle_mouse_pressed)
-    {
-        if (dx > 0)
-            fractal->transform.delta_x += 2 * dx / fractal->transform.zoom / WIDTH;
-        else if (dx < 0)
-            fractal->transform.delta_x += 2 * dx / fractal->transform.zoom / WIDTH;
-        if (dy > 0)
-            fractal->transform.delta_y += 2 * dy / fractal->transform.zoom / WIDTH;
-        else if (dy < 0)
-            fractal->transform.delta_y += 2 * dy / fractal->transform.zoom / WIDTH;
-        fractal->transform.yy = y;
-        fractal->transform.xx = x;
-    }
-    draw_fractal(fractal);
-    //julia(param);
+	fractal = (t_fractal *)param;
+	dx = fractal->transform.xx - x;
+	dy = fractal->transform.yy - y;
+	if (fractal->transform.right_mouse_pressed)
+	{
+		if (dx > 0)
+			fractal->transform.c_re += 0.01f / fractal->transform.zoom;
+		else if (dx < 0)
+			fractal->transform.c_re -= 0.01f / fractal->transform.zoom;
+		if (dy > 0)
+			fractal->transform.c_im += 0.01f / fractal->transform.zoom;
+		else if (dy < 0)
+			fractal->transform.c_im -= 0.01f / fractal->transform.zoom;
+		fractal->transform.yy = y;
+		fractal->transform.xx = x;
+	}
+	if (fractal->transform.middle_mouse_pressed)
+	{
+		if (dx > 0)
+			fractal->transform.delta_x += 2 *
+				dx / fractal->transform.zoom / WIDTH;
+		else if (dx < 0)
+			fractal->transform.delta_x += 2 *
+				dx / fractal->transform.zoom / WIDTH;
+		if (dy > 0)
+			fractal->transform.delta_y += 2 *
+				dy / fractal->transform.zoom / WIDTH;
+		else if (dy < 0)
+			fractal->transform.delta_y += 2 *
+				dy / fractal->transform.zoom / WIDTH;
+		fractal->transform.yy = y;
+		fractal->transform.xx = x;
+	}
+	draw_fractal(fractal);
+	return (0);
 }
 
-int plus_clicked(int key, void *param)
+int	plus_clicked(int key, void *param)
 {
-    t_fractal *fractal;
+	t_fractal *fractal;
 
-    fractal = (t_fractal *)param;
-    if (key == 0x18)
-        fractal->transform.zoom += 2;
-    else if (key == 0x1B)
-        fractal->transform.zoom -= 2;
-    else if (key == 0x7C)
-        fractal->transform.delta_x += 0.1;
-    else if (key == 0x7B)
-        fractal->transform.delta_x -= 0.1;
-    else if (key == 0x7E)
-        fractal->transform.delta_y += 0.1;
-    else if (key == 0x7D)
-        fractal->transform.delta_y -= 0.1;
-    else if (key == 0x08)
-        fractal->transform.color += 0x000002;
-    else if (key == 0x12 && fractal->transform.max_iterations > 50)
-        fractal->transform.max_iterations -= 10;
-    else if (key == 0x13 && fractal->transform.max_iterations < 1000)
-        fractal->transform.max_iterations += 10;
-    else if (key == 0x35)
-        exit(-2);
-    draw_fractal(fractal);
-    return (0);
+	fractal = (t_fractal *)param;
+	if (key == 0x18)
+		fractal->transform.zoom += 2;
+	else if (key == 0x1B)
+		fractal->transform.zoom -= 2;
+	else if (key == 0x7C)
+		fractal->transform.delta_x += 0.1;
+	else if (key == 0x7B)
+		fractal->transform.delta_x -= 0.1;
+	else if (key == 0x7E)
+		fractal->transform.delta_y += 0.1;
+	else if (key == 0x7D)
+		fractal->transform.delta_y -= 0.1;
+	else if (key == 0x08)
+		fractal->transform.color += 0x000002;
+	else if (key == 0x12 && fractal->transform.max_iterations > 50)
+		fractal->transform.max_iterations -= 10;
+	else if (key == 0x13 && fractal->transform.max_iterations < 1000)
+		fractal->transform.max_iterations += 10;
+	else if (key == 0x35)
+		exit(-2);
+	draw_fractal(fractal);
+	return (0);
 }
 
-int close_window(void *param)
+int	close_window(void *param)
 {
 	int *windows_count;
 

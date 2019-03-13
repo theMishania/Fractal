@@ -6,7 +6,7 @@
 /*   By: cocummin <cocummin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/07 21:08:08 by cocummin          #+#    #+#             */
-/*   Updated: 2019/03/13 17:20:08 by cocummin         ###   ########.fr       */
+/*   Updated: 2019/03/13 18:37:48 by cocummin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,15 @@ typedef struct s_fractal
 }           t_fractal;
 
 void arguments_check(int argc, char **argv);
-int is_names_correct(int argc, char **argv);
+void is_names_correct(int argc, char **argv);
+
+int     cl_source_str_gen(char *file_name, char **source_str);
 
 void    initiate_fractals(void *mlx_ptr, int argc, char **argv);
 void    utils_create(void *mlx_ptr, int argc, t_fractal *fractals);
 
 void    draw_fractal(t_fractal *fractal);
+void	initiate_kernel(t_fractal *fractal);
 
 void    transform_init(t_fractal *fractal);
 
@@ -97,7 +100,9 @@ void    ship_utils(t_transform *fractal_transform);
 void    spider_utils(t_transform *fractal_transform);
 
 void    fractal_init(t_fractal *fractal);
+void	fractal_init_2(t_fractal *fractal);
 void    names_init(t_fractal *fractal);
+void	names_init_2(t_fractal *fractal);
 
 int mouse_press(int button, int x, int y, void *param);
 int mouse_release(int button, int x, int y, void *param);
