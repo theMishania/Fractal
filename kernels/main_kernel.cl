@@ -63,29 +63,31 @@ RgbColor HsvToRgb(HsvColor hsv)
     q = (hsv.v * (255 - ((hsv.s * remainder) >> 8))) >> 8;
     t = (hsv.v * (255 - ((hsv.s * (255 - remainder)) >> 8))) >> 8;
 
-    switch (region)
+    if (region == 0)
     {
-        case 0:
-            rgb.r = hsv.v; rgb.g = t; rgb.b = p;
-            break;
-        case 1:
-            rgb.r = q; rgb.g = hsv.v; rgb.b = p;
-            break;
-        case 2:
-            rgb.r = p; rgb.g = hsv.v; rgb.b = t;
-            break;
-        case 3:
-            rgb.r = p; rgb.g = q; rgb.b = hsv.v;
-            break;
-        case 4:
-            rgb.r = t; rgb.g = p; rgb.b = hsv.v;
-            break;
-        default:
-            rgb.r = hsv.v; rgb.g = p; rgb.b = q;
-            break;
+        rgb.r = hsv.v; rgb.g = t; rgb.b = p;
     }
-
-    return rgb;
+    else if (region == 1)
+    {
+        rgb.r = q; rgb.g = hsv.v; rgb.b = p;
+    }
+    else if (region == 2)
+    {
+        rgb.r = p; rgb.g = hsv.v; rgb.b = t;
+    }
+    else if (region == 3)
+    {
+        rgb.r = p; rgb.g = q; rgb.b = hsv.v;
+    }
+    else if (region == 4)
+    {
+        rgb.r = t; rgb.g = p; rgb.b = hsv.v;
+    }
+    else
+    {
+        rgb.r = hsv.v; rgb.g = p; rgb.b = q;
+    }
+    return (rgb);
 }
 
 int rgb_to_int(RgbColor rgb)
@@ -105,5 +107,5 @@ int rgb_to_int(RgbColor rgb)
 
     result = red + green + blue;
 
-    return result;
+    return (result);
 }

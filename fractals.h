@@ -6,7 +6,7 @@
 /*   By: chorange <chorange@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 20:26:32 by chorange          #+#    #+#             */
-/*   Updated: 2019/03/13 20:37:18 by chorange         ###   ########.fr       */
+/*   Updated: 2019/03/14 13:39:27 by chorange         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,9 @@ typedef struct		s_fractal
 	cl_program			program;
 	cl_kernel			kernel;
 
-	char				*file_name;
-	char				*win_name;
-	char				*kernel_name;
+	char				file_name[40];
+	char				win_name[40];
+	char				kernel_name[40];
 
 	size_t				source_size;
 	char				*source_str;

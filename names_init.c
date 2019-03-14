@@ -6,7 +6,7 @@
 /*   By: chorange <chorange@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 13:28:04 by cocummin          #+#    #+#             */
-/*   Updated: 2019/03/13 20:02:46 by chorange         ###   ########.fr       */
+/*   Updated: 2019/03/14 13:32:04 by chorange         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,6 @@ static void	names_init_2(t_fractal *fractal)
 
 void		names_init(t_fractal *fractal)
 {
-	fractal->file_name = (char *)malloc(40);
-	fractal->win_name = (char *)malloc(40);
-	fractal->kernel_name = (char *)malloc(40);
 	if (fractal->fractal_type == mandelbrot)
 	{
 		ft_strcpy(fractal->file_name, "kernels/mandelbrot_kernel.cl\0");

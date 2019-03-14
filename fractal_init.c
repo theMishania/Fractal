@@ -6,7 +6,7 @@
 /*   By: chorange <chorange@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 12:30:28 by cocummin          #+#    #+#             */
-/*   Updated: 2019/03/13 20:02:11 by chorange         ###   ########.fr       */
+/*   Updated: 2019/03/14 13:42:05 by chorange         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,4 @@ void		fractal_init(t_fractal *fractal)
 			&fractal->ret_num_devices);
 	fractal_init_2(fractal);
 	free(fractal->source_str);
-	free(fractal->win_name);
-	free(fractal->kernel_name);
-	free(fractal->file_name);
 }
