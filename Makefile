@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: chorange <chorange@student.42.fr>          +#+  +:+       +#+         #
+#    By: cocummin <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/18 18:53:25 by chorange          #+#    #+#              #
-#    Updated: 2019/03/13 20:16:54 by chorange         ###   ########.fr        #
+#    Updated: 2019/03/16 10:58:22 by cocummin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fractol
 
-FLAGS = -Wextra -Wall -Werror
+FLAGS = ##-Wextra -Wall -Werror
 
 OBJECTS = main.o draw_fractal.o fractal_init.o names_init.o \
 			keys_handling.o arguments_check.o transform_init.o\

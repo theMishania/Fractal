@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_fractal.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chorange <chorange@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cocummin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 14:22:53 by cocummin          #+#    #+#             */
-/*   Updated: 2019/03/13 20:00:47 by chorange         ###   ########.fr       */
+/*   Updated: 2019/03/16 10:57:07 by cocummin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static void	initiate_kernel(t_fractal *fractal)
 void		draw_fractal(t_fractal *fractal)
 {
 	static int	windows_count;
+	char *tempo;
 
 	if (!fractal->win_ptr)
 	{
@@ -46,8 +47,10 @@ void		draw_fractal(t_fractal *fractal)
 			fractal->image, 0, 0);
 	mlx_string_put(fractal->mlx_ptr, fractal->win_ptr,
 			50, 50, 0x000000, "Iterations Count:");
+	tempo = ft_itoa(fractal->transform.max_iterations);	
 	mlx_string_put(fractal->mlx_ptr, fractal->win_ptr, 230, 50,
-			0x000000, ft_itoa(fractal->transform.max_iterations));
+			0x000000, tempo);
+	free(tempo);
 	mlx_hook(fractal->win_ptr, 2, 1L << 0, key_pressed, fractal);
 	mlx_hook(fractal->win_ptr, 4, 1L << 0, mouse_press, fractal);
 	mlx_hook(fractal->win_ptr, 5, 1L << 0, mouse_release, fractal);
