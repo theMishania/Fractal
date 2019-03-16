@@ -11,17 +11,17 @@ types of fractals:
 4. Spider
 5. Mishaniabrot
 
-Mandelbrot Fractal
+# Mandelbrot Fractal
 ![tag](https://github.com/theMishania/Fractal/blob/master/Screenshots/mandelbrot.png)
 
 Mandelbrot Fractal Zoomed(use mouse middle button to zoom)
 ![anotherTag](https://github.com/theMishania/Fractal/blob/master/Screenshots/mandelbrotZoomed.png)
 ![anotherTag](https://github.com/theMishania/Fractal/blob/master/Screenshots/mandelbrotZoomed2x.png)
 
-Julia Fractal
+# Julia Fractal
 ![julia](https://github.com/theMishania/Fractal/blob/master/Screenshots/julia.png)
 
-Multiple Windows are available
+# Multiple Windows are available
 
-Spider and burning ship fractals 
+# Spider and burning ship fractals 
 ![windows](https://github.com/theMishania/Fractal/blob/master/Screenshots/multipleWindows.png)
