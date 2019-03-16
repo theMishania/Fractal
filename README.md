@@ -3,6 +3,7 @@
 
 Use "make" to compile the program
 then "./fractol fractal_type_lowercased"
+
 Use "1"/"2" keys to increase/decrease number of iterations
 
 types of fractals:
