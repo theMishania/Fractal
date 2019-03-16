@@ -1,5 +1,5 @@
 # Fractal
-21 school project, Fractals drawing
+21 school project, Fractals drawing (OpenCL implementation)
 
 Use "make" to compile the program
 then "./fractol fractal_type_lowercased"
