@@ -4,7 +4,7 @@
 Use "make" to compile the program
 then "./fractol fractal_type_lowercased"
 
-Use "1"/"2" keys to increase/decrease number of iterations
+Use "1"/"2" keys to increase/decrease number of iterations and "c" key to change color
 
 types of fractals:
 1. Mandelbrot
@@ -12,6 +12,7 @@ types of fractals:
 3. Burning_ship
 4. Spider
 5. Mishaniabrot
+6. Flourish
 
 # Mandelbrot Fractal
 ![tag](https://github.com/theMishania/Fractal/blob/master/Screenshots/mandelbrot.png)
