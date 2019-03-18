@@ -6,7 +6,7 @@
 #    By: cocummin <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/18 18:53:25 by chorange          #+#    #+#              #
-#    Updated: 2019/03/16 10:58:22 by cocummin         ###   ########.fr        #
+#    Updated: 2019/03/18 11:35:21 by cocummin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ FLAGS = ##-Wextra -Wall -Werror
 OBJECTS = main.o draw_fractal.o fractal_init.o names_init.o \
 			keys_handling.o arguments_check.o transform_init.o\
 			cl_source_str_gen.o get_next_line/get_next_line.o\
-			transform_change.o
+			transform_change.o flourish_init.o
 
 LIBS = -L./minilibx -lmlx -L./libft -lft -lm -framework OpenGL -framework AppKit -framework OpenCL
 

@@ -6,7 +6,7 @@
 /*   By: cocummin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 12:39:41 by cocummin          #+#    #+#             */
-/*   Updated: 2019/03/13 18:56:31 by cocummin         ###   ########.fr       */
+/*   Updated: 2019/03/18 11:19:48 by cocummin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	mandelbrot_utils(t_transform *fractal_transform)
 
 void	julia_utils(t_transform *fractal_transform)
 {
-	fractal_transform->zoom = 1;
+	fractal_transform->zoom = 0.65;
 	fractal_transform->delta_x = 0;
 	fractal_transform->delta_y = 0;
 	fractal_transform->xx = 0;

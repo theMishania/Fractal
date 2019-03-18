@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fractals.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chorange <chorange@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cocummin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 20:26:32 by chorange          #+#    #+#             */
-/*   Updated: 2019/03/14 13:39:27 by chorange         ###   ########.fr       */
+/*   Updated: 2019/03/18 11:22:55 by cocummin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef enum		e_fractal_type
 	mishaniabrot,
 	ship,
 	spider,
+	flourish,
 }					t_fractal_type;
 
 typedef struct		s_transform
@@ -93,6 +94,7 @@ void				julia_utils(t_transform *fractal_transform);
 void				mishania_utils(t_transform *fractal_transform);
 void				ship_utils(t_transform *fractal_transform);
 void				spider_utils(t_transform *fractal_transform);
+void				flourish_utils(t_transform *fractal_transform);
 
 void				fractal_init(t_fractal *fractal);
 void				names_init(t_fractal *fractal);

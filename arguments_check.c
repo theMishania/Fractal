@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   arguments_check.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chorange <chorange@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cocummin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/07 19:40:01 by cocummin          #+#    #+#             */
-/*   Updated: 2019/03/13 20:03:51 by chorange         ###   ########.fr       */
+/*   Updated: 2019/03/18 11:41:20 by cocummin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,12 @@ static void	is_names_correct(int argc, char **argv)
 				(ft_strcmp(argv[i], "julia") != 0) &&
 				(ft_strcmp(argv[i], "burning_ship") != 0) &&
 				(ft_strcmp(argv[i], "spider") != 0) &&
-				(ft_strcmp(argv[i], "mishaniabrot") != 0))
+				(ft_strcmp(argv[i], "mishaniabrot") != 0) &&
+				(ft_strcmp(argv[i], "flourish") != 0))
 		{
 			ft_putendl("Wrong fractal name in parameters, choose Fractals:");
-			ft_putendl("mandelbrot,julia,burning_ship,spider or mishaniabrot");
+			ft_putendl("mandelbrot,julia, burning_ship, spider");
+			ft_putendl("mishaniabrot or flourish");
 			exit(-2);
 		}
 		i++;
@@ -38,7 +40,8 @@ void		arguments_check(int argc, char **argv)
 	if (argc < 2)
 	{
 		ft_putendl("No arguments, please choose Fractals:");
-		ft_putendl("mandelbrot, julia, burning_ship, spider or mishaniabrot");
+		ft_putendl("mandelbrot, julia, burning_ship, spider");
+		ft_putendl("mishaniabrot or flourish");
 		exit(-2);
 	}
 	else if (argc > 6)

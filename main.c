@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chorange <chorange@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cocummin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 18:42:57 by cocummin          #+#    #+#             */
-/*   Updated: 2019/03/13 20:05:45 by chorange         ###   ########.fr       */
+/*   Updated: 2019/03/18 11:27:44 by cocummin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractals.h"
 
-static void	utils_create(void *mlx_ptr, int argc, t_fractal *fractals)
+static void	mlx_create_for_each(void *mlx_ptr, int argc, t_fractal *fractals)
 {
 	int i;
 
@@ -30,7 +30,7 @@ static void	initiate_fractals(void *mlx_ptr, int argc, char **argv)
 	static t_fractal	fractals[6];
 
 	i = 1;
-	utils_create(mlx_ptr, argc, fractals);
+	mlx_create_for_each(mlx_ptr, argc, fractals);
 	while (i < argc)
 	{
 		if (ft_strcmp(argv[i], "mandelbrot") == 0)
@@ -43,6 +43,8 @@ static void	initiate_fractals(void *mlx_ptr, int argc, char **argv)
 			fractals[i - 1].fractal_type = spider;
 		else if (ft_strcmp(argv[i], "mishaniabrot") == 0)
 			fractals[i - 1].fractal_type = mishaniabrot;
+		else if (ft_strcmp(argv[i], "flourish") == 0)
+			fractals[i - 1].fractal_type = flourish;
 		draw_fractal(&fractals[i - 1]);
 		i++;
 	}

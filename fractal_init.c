@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fractal_init.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chorange <chorange@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cocummin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 12:30:28 by cocummin          #+#    #+#             */
-/*   Updated: 2019/03/14 13:42:05 by chorange         ###   ########.fr       */
+/*   Updated: 2019/03/18 11:29:32 by cocummin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void		transform_init(t_fractal *fractal)
 		ship_utils(&fractal->transform);
 	else if (fractal->fractal_type == spider)
 		spider_utils(&fractal->transform);
+	else if (fractal->fractal_type == flourish)
+		flourish_utils(&fractal->transform);
 	fractal->transform.max_iterations = 50;
 }
 
